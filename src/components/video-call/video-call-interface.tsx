@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { 
-  Video, 
-  VideoOff, 
-  Mic, 
-  MicOff, 
-  Phone, 
-  PhoneOff, 
-  Settings, 
+import { useState, useEffect, useRef } from "react";
+import {
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Phone,
+  PhoneOff,
+  Settings,
   MessageCircle,
   MoreVertical,
   Volume2,
-  VolumeX
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+  VolumeX,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface VideoCallInterfaceProps {
   callId: string;
@@ -40,7 +40,9 @@ export function VideoCallInterface({
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
   const [isSpeakerEnabled, setIsSpeakerEnabled] = useState(true);
-  const [callStatus, setCallStatus] = useState<'connecting' | 'connected' | 'ended'>('connecting');
+  const [callStatus, setCallStatus] = useState<
+    "connecting" | "connected" | "ended"
+  >("connecting");
   const [callDuration, setCallDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
 
@@ -51,12 +53,12 @@ export function VideoCallInterface({
   useEffect(() => {
     // Initialize video call
     initializeCall();
-    
+
     // Start call timer when connected
     let interval: NodeJS.Timeout;
-    if (callStatus === 'connected') {
+    if (callStatus === "connected") {
       interval = setInterval(() => {
-        setCallDuration(prev => prev + 1);
+        setCallDuration((prev) => prev + 1);
       }, 1000);
     }
 
@@ -97,10 +99,10 @@ export function VideoCallInterface({
 
       // Simulate connection after 2 seconds
       setTimeout(() => {
-        setCallStatus('connected');
+        setCallStatus("connected");
       }, 2000);
     } catch (error) {
-      console.error('Error accessing media devices:', error);
+      console.error("Error accessing media devices:", error);
     }
   };
 
@@ -122,7 +124,9 @@ export function VideoCallInterface({
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const handleMouseMove = () => {
@@ -131,7 +135,7 @@ export function VideoCallInterface({
 
   if (isIncoming) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-[#1ec3da] bg-opacity-90 flex items-center justify-center z-50">
         <Card className="w-full max-w-md mx-4">
           <CardContent className="p-8 text-center">
             <div className="mb-6">
@@ -151,7 +155,7 @@ export function VideoCallInterface({
               >
                 <PhoneOff className="h-6 w-6" />
               </Button>
-              
+
               <Button
                 onClick={onAcceptCall}
                 className="bg-green-600 hover:bg-green-700 rounded-full w-16 h-16"
@@ -166,15 +170,17 @@ export function VideoCallInterface({
   }
 
   return (
-    <div 
-      className="fixed inset-0 bg-black flex flex-col z-50"
+    <div
+      className="fixed inset-0 bg-[#1ec3da] flex flex-col z-50"
       onMouseMove={handleMouseMove}
     >
       {/* Header */}
-      <div className={`absolute top-0 left-0 right-0 z-10 transition-opacity duration-300 ${
-        showControls ? 'opacity-100' : 'opacity-0'
-      }`}>
-        <div className="bg-black bg-opacity-50 p-4">
+      <div
+        className={`absolute top-0 left-0 right-0 z-10 transition-opacity duration-300 ${
+          showControls ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="bg-[#1ec3da] bg-opacity-50 p-4">
           <div className="flex items-center justify-between text-white">
             <div className="flex items-center space-x-3">
               <img
@@ -185,16 +191,22 @@ export function VideoCallInterface({
               <div>
                 <h3 className="font-medium">{participantName}</h3>
                 <div className="flex items-center space-x-2 text-sm">
-                  <Badge 
+                  <Badge
                     className={`${
-                      callStatus === 'connected' ? 'bg-green-600' : 
-                      callStatus === 'connecting' ? 'bg-yellow-600' : 'bg-red-600'
+                      callStatus === "connected"
+                        ? "bg-green-600"
+                        : callStatus === "connecting"
+                        ? "bg-yellow-600"
+                        : "bg-red-600"
                     }`}
                   >
-                    {callStatus === 'connected' ? 'Connected' : 
-                     callStatus === 'connecting' ? 'Connecting...' : 'Ended'}
+                    {callStatus === "connected"
+                      ? "Connected"
+                      : callStatus === "connecting"
+                      ? "Connecting..."
+                      : "Ended"}
                   </Badge>
-                  {callStatus === 'connected' && (
+                  {callStatus === "connected" && (
                     <span>{formatDuration(callDuration)}</span>
                   )}
                 </div>
@@ -256,18 +268,20 @@ export function VideoCallInterface({
       </div>
 
       {/* Controls */}
-      <div className={`absolute bottom-0 left-0 right-0 transition-opacity duration-300 ${
-        showControls ? 'opacity-100' : 'opacity-0'
-      }`}>
-        <div className="bg-black bg-opacity-50 p-6">
+      <div
+        className={`absolute bottom-0 left-0 right-0 transition-opacity duration-300 ${
+          showControls ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="bg-[#1ec3da] bg-opacity-50 p-6">
           <div className="flex justify-center space-x-4">
             {/* Audio Toggle */}
             <Button
               onClick={toggleAudio}
               className={`rounded-full w-14 h-14 ${
-                isAudioEnabled 
-                  ? 'bg-gray-700 hover:bg-gray-600' 
-                  : 'bg-red-600 hover:bg-red-700'
+                isAudioEnabled
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-red-600 hover:bg-red-700"
               }`}
             >
               {isAudioEnabled ? (
@@ -281,9 +295,9 @@ export function VideoCallInterface({
             <Button
               onClick={toggleVideo}
               className={`rounded-full w-14 h-14 ${
-                isVideoEnabled 
-                  ? 'bg-gray-700 hover:bg-gray-600' 
-                  : 'bg-red-600 hover:bg-red-700'
+                isVideoEnabled
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-red-600 hover:bg-red-700"
               }`}
             >
               {isVideoEnabled ? (
@@ -305,9 +319,9 @@ export function VideoCallInterface({
             <Button
               onClick={toggleSpeaker}
               className={`rounded-full w-14 h-14 ${
-                isSpeakerEnabled 
-                  ? 'bg-gray-700 hover:bg-gray-600' 
-                  : 'bg-gray-600 hover:bg-gray-500'
+                isSpeakerEnabled
+                  ? "bg-gray-700 hover:bg-gray-600"
+                  : "bg-gray-600 hover:bg-gray-500"
               }`}
             >
               {isSpeakerEnabled ? (
@@ -318,9 +332,7 @@ export function VideoCallInterface({
             </Button>
 
             {/* Settings */}
-            <Button
-              className="bg-gray-700 hover:bg-gray-600 rounded-full w-14 h-14"
-            >
+            <Button className="bg-gray-700 hover:bg-gray-600 rounded-full w-14 h-14">
               <Settings className="h-6 w-6 text-white" />
             </Button>
           </div>
@@ -328,8 +340,8 @@ export function VideoCallInterface({
       </div>
 
       {/* Connection Status Overlay */}
-      {callStatus === 'connecting' && (
-        <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+      {callStatus === "connecting" && (
+        <div className="absolute inset-0 bg-[#1ec3da] bg-opacity-75 flex items-center justify-center">
           <div className="text-center text-white">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
             <p className="text-lg">Connecting to {participantName}...</p>

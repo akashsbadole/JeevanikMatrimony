@@ -1,47 +1,66 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Search, Filter, Heart, Eye, MapPin, Briefcase, GraduationCap, Bookmark, BookmarkCheck, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { 
-  useSearchResults, 
-  useSearchFilters, 
-  useIsSearching, 
+import { useState, useEffect } from "react";
+import {
+  Search,
+  Filter,
+  Heart,
+  Eye,
+  MapPin,
+  Briefcase,
+  GraduationCap,
+  Bookmark,
+  BookmarkCheck,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import {
+  useSearchResults,
+  useSearchFilters,
+  useIsSearching,
   useTotalResults,
   useSearchActions,
-  useIsProfileShortlisted,
-  useHasActiveFilters
-} from '@/lib/stores/search-store';
-import { useCommunicationActions } from '@/lib/stores/communication-store';
-import { locationService } from '@/lib/services/location-service';
-import { ProfileModal } from '@/components/profile/profile-modal';
-import { UserProfile } from '@/lib/stores/types';
+  useHasActiveFilters,
+  useSearchStore,
+} from "@/lib/stores/search-store";
+import { useCommunicationActions } from "@/lib/stores/communication-store";
+import { locationService } from "@/lib/services/location-service";
+import { ProfileModal } from "@/components/profile/profile-modal";
+import { UserProfile } from "@/lib/stores/types";
 
 export default function SearchPage() {
   const { toast } = useToast();
   const [showFilters, setShowFilters] = useState(false);
-  const [quickSearch, setQuickSearch] = useState('');
+  const [quickSearch, setQuickSearch] = useState("");
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
-  const [selectedProfile, setSelectedProfile] = useState<UserProfile | null>(null);
+  const [selectedProfile, setSelectedProfile] = useState<UserProfile | null>(
+    null
+  );
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreProfiles, setHasMoreProfiles] = useState(true);
-  
+
   // Zustand store hooks
   const searchResults = useSearchResults();
   const filters = useSearchFilters();
   const isSearching = useIsSearching();
   const totalResults = useTotalResults();
   const hasActiveFilters = useHasActiveFilters();
-  
+
   const {
     setSearchResults,
     updateFilter,
@@ -49,119 +68,125 @@ export default function SearchPage() {
     setSearching,
     addToShortlist,
     removeFromShortlist,
-    addToRecentlyViewed
+    addToRecentlyViewed,
   } = useSearchActions();
-  
+
   const { addSentInterest } = useCommunicationActions();
 
   // Mock profile data for demonstration
   const mockProfiles: UserProfile[] = [
     {
-      id: '1',
-      userId: 'user1',
-      profileFor: 'self',
-      createdByRelation: 'self',
-      firstName: 'Priya',
-      lastName: 'Sharma',
-      dateOfBirth: new Date('1998-05-15'),
+      id: "1",
+      userId: "user1",
+      profileFor: "self",
+      createdByRelation: "self",
+      firstName: "Priya",
+      lastName: "Sharma",
+      dateOfBirth: new Date("1998-05-15"),
       age: 26,
-      gender: 'female',
-      maritalStatus: 'never_married',
+      gender: "female",
+      maritalStatus: "never_married",
       heightCm: 165,
       weightKg: 55,
-      bodyType: 'slim',
-      complexion: 'fair',
-      physicalStatus: 'normal',
-      country: 'India',
-      state: 'Maharashtra',
-      city: 'Mumbai',
+      bodyType: "slim",
+      complexion: "fair",
+      physicalStatus: "normal",
+      country: "India",
+      state: "Maharashtra",
+      city: "Mumbai",
       willingToRelocate: false,
-      religion: 'Hindu',
-      caste: 'Brahmin',
-      motherTongue: 'Hindi',
-      knownLanguages: ['Hindi', 'English', 'Marathi'],
-      aboutMe: 'I am a software engineer who loves to travel and read books.',
-      lookingFor: 'Looking for a caring and understanding life partner.',
-      hobbiesInterests: ['Reading', 'Traveling', 'Cooking'],
+      religion: "Hindu",
+      caste: "Brahmin",
+      motherTongue: "Hindi",
+      knownLanguages: ["Hindi", "English", "Marathi"],
+      aboutMe: "I am a software engineer who loves to travel and read books.",
+      lookingFor: "Looking for a caring and understanding life partner.",
+      hobbiesInterests: ["Reading", "Traveling", "Cooking"],
       profileCompletionPercentage: 92,
       isVerified: true,
-      verificationBadges: ['photo_verified', 'education_verified'],
+      verificationBadges: ["photo_verified", "education_verified"],
       profileViewsCount: 156,
       lastActive: new Date(),
-      photos: [{ 
-        id: '1', 
-        profileId: '1', 
-        photoUrl: '/api/placeholder/300/400', 
-        photoType: 'profile', 
-        isPrimary: true, 
-        isVerified: true, 
-        uploadDate: new Date(), 
-        displayOrder: 0, 
-        privacyLevel: 'public' 
-      }],
-      education: [{ 
-        id: '1', 
-        profileId: '1', 
-        educationLevel: 'bachelors', 
-        degreeName: 'B.Tech Computer Science', 
-        institutionName: 'IIT Mumbai', 
-        isHighestEducation: true 
-      }],
-      professional: [{ 
-        id: '1', 
-        profileId: '1', 
-        occupation: 'Software Engineer', 
-        companyName: 'Tech Corp', 
-        isCurrentJob: true, 
-        willingToRelocateForWork: false 
-      }],
+      photos: [
+        {
+          id: "1",
+          profileId: "1",
+          photoUrl: "/api/placeholder/300/400",
+          photoType: "profile",
+          isPrimary: true,
+          isVerified: true,
+          uploadDate: new Date(),
+          displayOrder: 0,
+          privacyLevel: "public",
+        },
+      ],
+      education: [
+        {
+          id: "1",
+          profileId: "1",
+          educationLevel: "bachelors",
+          degreeName: "B.Tech Computer Science",
+          institutionName: "IIT Mumbai",
+          isHighestEducation: true,
+        },
+      ],
+      professional: [
+        {
+          id: "1",
+          profileId: "1",
+          occupation: "Software Engineer",
+          companyName: "Tech Corp",
+          isCurrentJob: true,
+          willingToRelocateForWork: false,
+        },
+      ],
       family: {
-        id: '1',
-        profileId: '1',
-        familyType: 'nuclear',
-        familyValues: 'moderate',
-        fatherLivingStatus: 'alive',
-        motherLivingStatus: 'alive',
+        id: "1",
+        profileId: "1",
+        familyType: "nuclear",
+        familyValues: "moderate",
+        fatherLivingStatus: "alive",
+        motherLivingStatus: "alive",
         totalBrothers: 1,
         marriedBrothers: 0,
         totalSisters: 0,
         marriedSisters: 0,
-        fatherOccupation: 'Business',
-        motherOccupation: 'Teacher'
+        fatherOccupation: "Business",
+        motherOccupation: "Teacher",
       },
       lifestyle: {
-        id: '1',
-        profileId: '1',
-        diet: 'vegetarian',
-        drinking: 'never',
-        smoking: 'never',
+        id: "1",
+        profileId: "1",
+        diet: "vegetarian",
+        drinking: "never",
+        smoking: "never",
         musicPreferences: [],
         moviePreferences: [],
-        sportsInterests: []
+        sportsInterests: [],
       },
       partnerPreferences: {
-        id: '1',
-        profileId: '1',
+        id: "1",
+        profileId: "1",
         ageMin: 26,
         ageMax: 32,
         heightMinCm: 170,
         heightMaxCm: 185,
-        maritalStatusPreference: ['never_married'],
-        preferredCountries: ['India'],
-        preferredStates: ['Maharashtra', 'Karnataka'],
+        maritalStatusPreference: ["never_married"],
+        preferredCountries: ["India"],
+        preferredStates: ["Maharashtra", "Karnataka"],
         preferredCities: [],
-        educationPreference: ['bachelors', 'masters'],
+        educationPreference: ["bachelors", "masters"],
         occupationPreference: [],
-        religionPreference: ['Hindu'],
+        religionPreference: ["Hindu"],
         castePreference: [],
-        dietPreference: ['vegetarian'],
-        drinkingPreference: ['never'],
-        smokingPreference: ['never'],
+        dietPreference: ["vegetarian"],
+        drinkingPreference: ["never"],
+        smokingPreference: ["never"],
         complexionPreference: [],
         bodyTypePreference: [],
         familyTypePreference: [],
-        familyValuesPreference: []
-      }
+        familyValuesPreference: [],
+      },
     },
     // Add more mock profiles...
   ];
@@ -175,81 +200,91 @@ export default function SearchPage() {
 
   const handleSearch = async () => {
     setSearching(true);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Filter mock profiles based on current filters
       let filteredProfiles = mockProfiles;
-      
+
       if (filters.ageMin || filters.ageMax) {
-        filteredProfiles = filteredProfiles.filter(profile => {
+        filteredProfiles = filteredProfiles.filter((profile) => {
           const age = profile.age;
-          return (!filters.ageMin || age >= filters.ageMin) && 
-                 (!filters.ageMax || age <= filters.ageMax);
+          return (
+            (!filters.ageMin || age >= filters.ageMin) &&
+            (!filters.ageMax || age <= filters.ageMax)
+          );
         });
       }
-      
+
       if (quickSearch) {
-        filteredProfiles = filteredProfiles.filter(profile =>
-          `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(quickSearch.toLowerCase()) ||
-          profile.professional[0]?.occupation?.toLowerCase().includes(quickSearch.toLowerCase())
+        filteredProfiles = filteredProfiles.filter(
+          (profile) =>
+            `${profile.firstName} ${profile.lastName}`
+              .toLowerCase()
+              .includes(quickSearch.toLowerCase()) ||
+            profile.professional[0]?.occupation
+              ?.toLowerCase()
+              .includes(quickSearch.toLowerCase())
         );
       }
-      
+
       setSearchResults(filteredProfiles, filteredProfiles.length, 1, 1);
-      
+
       toast({
-        title: 'Search Complete',
+        title: "Search Complete",
         description: `Found ${filteredProfiles.length} matching profiles`,
       });
     } catch (error) {
       toast({
-        title: 'Search Failed',
-        description: 'Please try again later',
-        variant: 'destructive',
+        title: "Search Failed",
+        description: "Please try again later",
+        variant: "destructive",
       });
     }
   };
 
   const handleSendInterest = (profileId: string) => {
-    const profile = searchResults.find(p => p.id === profileId);
+    const profile = searchResults.find((p) => p.id === profileId);
     if (profile) {
       const interest = {
         id: Date.now().toString(),
-        senderProfileId: 'current-user-id',
+        senderProfileId: "current-user-id",
         receiverProfileId: profileId,
-        interestType: 'regular' as const,
-        status: 'pending' as const,
+        interestType: "regular" as const,
+        status: "pending" as const,
         sentAt: new Date(),
         receiverProfile: profile,
       };
-      
+
       addSentInterest(interest);
-      
+
       toast({
-        title: 'Interest Sent!',
+        title: "Interest Sent!",
         description: `Your interest has been sent to ${profile.firstName}`,
       });
     }
   };
 
   const handleShortlist = (profileId: string) => {
-    const profile = searchResults.find(p => p.id === profileId);
-    const isShortlisted = useIsProfileShortlisted(profileId);
-    
+    const profile = searchResults.find((p) => p.id === profileId);
+
     if (profile) {
+      // Get shortlisted profiles from store directly
+      const shortlisted = useSearchStore.getState().shortlisted;
+      const isShortlisted = shortlisted.some((p) => p.id === profileId);
+
       if (isShortlisted) {
         removeFromShortlist(profileId);
         toast({
-          title: 'Removed from Shortlist',
+          title: "Removed from Shortlist",
           description: `${profile.firstName} has been removed from your shortlist`,
         });
       } else {
         addToShortlist(profile);
         toast({
-          title: 'Added to Shortlist',
+          title: "Added to Shortlist",
           description: `${profile.firstName} has been added to your shortlist`,
         });
       }
@@ -264,52 +299,52 @@ export default function SearchPage() {
 
   const handleLoadMore = async () => {
     if (loadingMore || !hasMoreProfiles) return;
-    
+
     setLoadingMore(true);
     try {
       // Simulate API call for more profiles
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Generate more mock profiles
       const moreProfiles = [
         {
           ...mockProfiles[0],
           id: `${Date.now()}-1`,
-          firstName: 'Kavya',
-          lastName: 'Reddy',
+          firstName: "Kavya",
+          lastName: "Reddy",
           age: 25,
-          city: 'Hyderabad',
-          state: 'Telangana',
+          city: "Hyderabad",
+          state: "Telangana",
         },
         {
           ...mockProfiles[0],
           id: `${Date.now()}-2`,
-          firstName: 'Shreya',
-          lastName: 'Gupta',
+          firstName: "Shreya",
+          lastName: "Gupta",
           age: 27,
-          city: 'Pune',
-          state: 'Maharashtra',
+          city: "Pune",
+          state: "Maharashtra",
         },
       ];
-      
+
       // Add to existing results
       const updatedResults = [...searchResults, ...moreProfiles];
       setSearchResults(updatedResults, updatedResults.length, 1, 1);
-      
+
       // Simulate end of results after a few loads
       if (updatedResults.length > 10) {
         setHasMoreProfiles(false);
       }
-      
+
       toast({
-        title: 'More Profiles Loaded',
+        title: "More Profiles Loaded",
         description: `Loaded ${moreProfiles.length} more profiles`,
       });
     } catch (error) {
       toast({
-        title: 'Failed to Load More',
-        description: 'Please try again later',
-        variant: 'destructive',
+        title: "Failed to Load More",
+        description: "Please try again later",
+        variant: "destructive",
       });
     } finally {
       setLoadingMore(false);
@@ -326,7 +361,7 @@ export default function SearchPage() {
     if (city && state) return `${city}, ${state}`;
     if (city) return city;
     if (state) return state;
-    return 'Location not specified';
+    return "Location not specified";
   };
 
   return (
@@ -336,7 +371,9 @@ export default function SearchPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Search Profiles</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Search Profiles
+              </h1>
               {hasActiveFilters && (
                 <p className="text-sm text-gray-600 mt-1">
                   {totalResults} profiles found with active filters
@@ -345,11 +382,7 @@ export default function SearchPage() {
             </div>
             <div className="flex items-center space-x-4">
               {hasActiveFilters && (
-                <Button
-                  variant="outline"
-                  onClick={clearFilters}
-                  size="sm"
-                >
+                <Button variant="outline" onClick={clearFilters} size="sm">
                   <X className="h-4 w-4 mr-2" />
                   Clear Filters
                 </Button>
@@ -370,10 +403,12 @@ export default function SearchPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filters Sidebar */}
-          <div className={`lg:block ${showFilters ? 'block' : 'hidden'}`}>
+          <div className={`lg:block ${showFilters ? "block" : "hidden"}`}>
             <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Search Filters</h2>
-              
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Search Filters
+              </h2>
+
               {/* Quick Search */}
               <div className="mb-6">
                 <Label className="block text-sm font-medium text-gray-700 mb-2">
@@ -393,13 +428,14 @@ export default function SearchPage() {
               {/* Age Range */}
               <div className="mb-6">
                 <Label className="block text-sm font-medium text-gray-700 mb-2">
-                  Age Range: {filters.ageMin || 18} - {filters.ageMax || 35} years
+                  Age Range: {filters.ageMin || 18} - {filters.ageMax || 35}{" "}
+                  years
                 </Label>
                 <Slider
                   value={[filters.ageMin || 18, filters.ageMax || 35]}
                   onValueChange={(value) => {
-                    updateFilter('ageMin', value[0]);
-                    updateFilter('ageMax', value[1]);
+                    updateFilter("ageMin", value[0]);
+                    updateFilter("ageMax", value[1]);
                   }}
                   max={60}
                   min={18}
@@ -409,12 +445,12 @@ export default function SearchPage() {
               </div>
 
               {/* Search Button */}
-              <Button 
-                onClick={handleSearch} 
+              <Button
+                onClick={handleSearch}
                 className="w-full bg-rose-600 hover:bg-rose-700 mb-3"
                 disabled={isSearching}
               >
-                {isSearching ? 'Searching...' : 'Search Profiles'}
+                {isSearching ? "Searching..." : "Search Profiles"}
               </Button>
             </div>
           </div>
@@ -429,10 +465,12 @@ export default function SearchPage() {
                     {totalResults} profiles found
                   </h3>
                   <p className="text-sm text-gray-600">
-                    {hasActiveFilters ? 'Showing filtered results' : 'Showing all profiles'}
+                    {hasActiveFilters
+                      ? "Showing filtered results"
+                      : "Showing all profiles"}
                   </p>
                 </div>
-                
+
                 <Select defaultValue="relevance">
                   <SelectTrigger className="w-48">
                     <SelectValue />
@@ -467,18 +505,26 @@ export default function SearchPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {searchResults.map((profile) => {
-                  const isShortlisted = useIsProfileShortlisted(profile.id);
-                  const primaryPhoto = profile.photos?.find(p => p.isPrimary)?.photoUrl || '/api/placeholder/300/400';
-                  
+                  const shortlisted = useSearchStore.getState().shortlisted;
+                  const isShortlisted = shortlisted.some(
+                    (p) => p.id === profile.id
+                  );
+                  const primaryPhoto =
+                    profile.photos?.find((p) => p.isPrimary)?.photoUrl ||
+                    "/api/placeholder/300/400";
+
                   return (
-                    <Card key={profile.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                    <Card
+                      key={profile.id}
+                      className="overflow-hidden hover:shadow-lg transition-shadow"
+                    >
                       <div className="relative">
                         <img
                           src={primaryPhoto}
                           alt={`${profile.firstName} ${profile.lastName}`}
                           className="w-full h-64 object-cover"
                         />
-                        
+
                         {/* Verification Badge */}
                         {profile.isVerified && (
                           <div className="absolute top-3 left-3">
@@ -487,14 +533,14 @@ export default function SearchPage() {
                             </Badge>
                           </div>
                         )}
-                        
+
                         {/* Match Score */}
                         <div className="absolute top-3 right-3">
                           <Badge className="bg-rose-500 text-white">
                             {profile.profileCompletionPercentage}% Complete
                           </Badge>
                         </div>
-                        
+
                         {/* Quick Actions */}
                         <div className="absolute bottom-3 right-3 flex space-x-2">
                           <Button
@@ -519,34 +565,37 @@ export default function SearchPage() {
                           </Button>
                         </div>
                       </div>
-                      
+
                       <CardContent className="p-4">
                         <div className="mb-3">
                           <h3 className="text-lg font-semibold text-gray-900">
                             {profile.firstName} {profile.lastName}
                           </h3>
                           <p className="text-sm text-gray-600">
-                            {profile.age} years • {formatHeight(profile.heightCm || 165)}
+                            {profile.age} years •{" "}
+                            {formatHeight(profile.heightCm || 165)}
                           </p>
                         </div>
-                        
+
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center text-sm text-gray-600">
                             <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                             {getLocationString(profile.city, profile.state)}
                           </div>
-                          
+
                           <div className="flex items-center text-sm text-gray-600">
                             <Briefcase className="h-4 w-4 mr-2 flex-shrink-0" />
-                            {profile.professional?.[0]?.occupation || 'Not specified'}
+                            {profile.professional?.[0]?.occupation ||
+                              "Not specified"}
                           </div>
-                          
+
                           <div className="flex items-center text-sm text-gray-600">
                             <GraduationCap className="h-4 w-4 mr-2 flex-shrink-0" />
-                            {profile.education?.[0]?.degreeName || 'Not specified'}
+                            {profile.education?.[0]?.degreeName ||
+                              "Not specified"}
                           </div>
                         </div>
-                        
+
                         <div className="flex space-x-2">
                           <Button
                             size="sm"
@@ -571,40 +620,73 @@ export default function SearchPage() {
                 })}
               </div>
             )}
-            
+
             {/* Load More */}
             {searchResults.length > 0 && hasMoreProfiles && (
               <div className="text-center mt-8">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
+                <Button
+                  variant="outline"
+                  size="lg"
                   onClick={handleLoadMore}
                   disabled={loadingMore}
                 >
-                  {loadingMore ? 'Loading...' : 'Load More Profiles'}
+                  {loadingMore ? "Loading..." : "Load More Profiles"}
                 </Button>
               </div>
             )}
-            
+
             {/* No More Results */}
             {!hasMoreProfiles && searchResults.length > 0 && (
               <div className="text-center mt-8">
                 <p className="text-gray-500">No more profiles to show</p>
               </div>
             )}
-            
+
             {/* No Results */}
             {!isSearching && searchResults.length === 0 && (
               <div className="text-center py-12">
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="h-12 w-12 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No profiles found</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No profiles found
+                </h3>
                 <p className="text-gray-600 mb-4">
                   Try adjusting your search filters to find more matches
                 </p>
                 <Button onClick={clearFilters} variant="outline">
                   Clear All Filters
+                </Button>
+              </div>
+            )}
+
+            {/* Load More Button */}
+            {searchResults.length > 0 && hasMoreProfiles && (
+              <div className="text-center mt-8">
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  size="lg"
+                  variant="outline"
+                  className="min-w-32"
+                >
+                  {loadingMore ? "Loading..." : "Load More Profiles"}
+                </Button>
+              </div>
+            )}
+
+            {/* End of Results Message */}
+            {searchResults.length > 0 && !hasMoreProfiles && (
+              <div className="text-center mt-8 py-6 border-t">
+                <p className="text-gray-600">
+                  You've seen all available profiles matching your criteria.
+                </p>
+                <Button
+                  onClick={clearFilters}
+                  variant="outline"
+                  className="mt-2"
+                >
+                  Clear Filters to See More
                 </Button>
               </div>
             )}

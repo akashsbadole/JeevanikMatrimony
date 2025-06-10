@@ -1,12 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Camera, Upload, Trash2, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useRef, useEffect } from "react";
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Camera,
+  Upload,
+  Trash2,
+  Download,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 interface VideoIntroductionProps {
   videoUrl?: string;
@@ -16,12 +25,12 @@ interface VideoIntroductionProps {
   maxDuration?: number; // in seconds
 }
 
-export function VideoIntroduction({ 
-  videoUrl, 
-  isOwner = false, 
-  onVideoUpload, 
+export function VideoIntroduction({
+  videoUrl,
+  isOwner = false,
+  onVideoUpload,
   onVideoDelete,
-  maxDuration = 60 
+  maxDuration = 60,
 }: VideoIntroductionProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -42,7 +51,7 @@ export function VideoIntroduction({
     let interval: NodeJS.Timeout;
     if (isRecording) {
       interval = setInterval(() => {
-        setRecordingTime(prev => {
+        setRecordingTime((prev) => {
           if (prev >= maxDuration) {
             stopRecording();
             return prev;
@@ -95,28 +104,28 @@ export function VideoIntroduction({
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
           width: { ideal: 1280 },
           height: { ideal: 720 },
-          facingMode: 'user'
-        }, 
-        audio: true 
+          facingMode: "user",
+        },
+        audio: true,
       });
-      
+
       streamRef.current = stream;
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
 
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp9'
+        mimeType: "video/webm;codecs=vp9",
       });
 
       const chunks: BlobPart[] = [];
-      
+
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           chunks.push(event.data);
@@ -124,16 +133,16 @@ export function VideoIntroduction({
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'video/webm' });
+        const blob = new Blob(chunks, { type: "video/webm" });
         setRecordedBlob(blob);
-        
+
         if (videoRef.current) {
           videoRef.current.srcObject = null;
           videoRef.current.src = URL.createObjectURL(blob);
         }
-        
+
         // Stop all tracks
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       };
 
       mediaRecorderRef.current = mediaRecorder;
@@ -142,16 +151,16 @@ export function VideoIntroduction({
       setRecordingTime(0);
 
       toast({
-        title: 'Recording Started',
-        description: 'Introduce yourself! You have up to 60 seconds.',
+        title: "Recording Started",
+        description: "Introduce yourself! You have up to 60 seconds.",
       });
-
     } catch (error) {
-      console.error('Error starting recording:', error);
+      console.error("Error starting recording:", error);
       toast({
-        title: 'Recording Failed',
-        description: 'Could not access camera and microphone. Please check permissions.',
-        variant: 'destructive',
+        title: "Recording Failed",
+        description:
+          "Could not access camera and microphone. Please check permissions.",
+        variant: "destructive",
       });
     }
   };
@@ -160,14 +169,14 @@ export function VideoIntroduction({
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      
+
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
 
       toast({
-        title: 'Recording Completed',
-        description: 'Your video introduction has been recorded successfully!',
+        title: "Recording Completed",
+        description: "Your video introduction has been recorded successfully!",
       });
     }
   };
@@ -175,28 +184,30 @@ export function VideoIntroduction({
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.type.startsWith('video/')) {
-        if (file.size > 50 * 1024 * 1024) { // 50MB limit
+      if (file.type.startsWith("video/")) {
+        if (file.size > 50 * 1024 * 1024) {
+          // 50MB limit
           toast({
-            title: 'File Too Large',
-            description: 'Please select a video file smaller than 50MB.',
-            variant: 'destructive',
+            title: "File Too Large",
+            description: "Please select a video file smaller than 50MB.",
+            variant: "destructive",
           });
           return;
         }
 
         onVideoUpload?.(file);
         setShowUploadOptions(false);
-        
+
         toast({
-          title: 'Video Uploaded',
-          description: 'Your video introduction has been uploaded successfully!',
+          title: "Video Uploaded",
+          description:
+            "Your video introduction has been uploaded successfully!",
         });
       } else {
         toast({
-          title: 'Invalid File Type',
-          description: 'Please select a valid video file.',
-          variant: 'destructive',
+          title: "Invalid File Type",
+          description: "Please select a valid video file.",
+          variant: "destructive",
         });
       }
     }
@@ -204,7 +215,9 @@ export function VideoIntroduction({
 
   const saveRecording = () => {
     if (recordedBlob) {
-      const file = new File([recordedBlob], 'video-introduction.webm', { type: 'video/webm' });
+      const file = new File([recordedBlob], "video-introduction.webm", {
+        type: "video/webm",
+      });
       onVideoUpload?.(file);
       setRecordedBlob(null);
       setShowUploadOptions(false);
@@ -215,15 +228,15 @@ export function VideoIntroduction({
     setRecordedBlob(null);
     setRecordingTime(0);
     if (videoRef.current) {
-      videoRef.current.src = videoUrl || '';
+      videoRef.current.src = videoUrl || "";
     }
   };
 
   const downloadVideo = () => {
     if (videoUrl) {
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = videoUrl;
-      link.download = 'video-introduction.mp4';
+      link.download = "video-introduction.mp4";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -233,7 +246,7 @@ export function VideoIntroduction({
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -249,7 +262,7 @@ export function VideoIntroduction({
           )}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         {/* Video Player */}
         <div className="relative bg-gray-900 rounded-lg overflow-hidden mb-4">
@@ -268,15 +281,19 @@ export function VideoIntroduction({
               />
 
               {/* Video Controls Overlay */}
-              <div className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition-opacity duration-200">
+              <div className="absolute inset-0 bg-[#1ec3da]/20 opacity-0 hover:opacity-100 transition-opacity duration-200">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Button
                     variant="ghost"
                     size="lg"
                     onClick={togglePlay}
-                    className="bg-black/50 text-white hover:bg-black/70 rounded-full w-16 h-16"
+                    className="bg-[#1ec3da]/50 text-white hover:bg-[#1ec3da]/70 rounded-full w-16 h-16"
                   >
-                    {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8 ml-1" />}
+                    {isPlaying ? (
+                      <Pause className="h-8 w-8" />
+                    ) : (
+                      <Play className="h-8 w-8 ml-1" />
+                    )}
                   </Button>
                 </div>
 
@@ -289,17 +306,25 @@ export function VideoIntroduction({
                       onClick={toggleMute}
                       className="text-white hover:bg-white/20"
                     >
-                      {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                      {isMuted ? (
+                        <VolumeX className="h-4 w-4" />
+                      ) : (
+                        <Volume2 className="h-4 w-4" />
+                      )}
                     </Button>
 
                     <div className="flex-1">
-                      <div 
+                      <div
                         className="bg-white/30 rounded-full h-1 cursor-pointer"
                         onClick={handleSeek}
                       >
-                        <div 
+                        <div
                           className="bg-white rounded-full h-1 transition-all duration-200"
-                          style={{ width: `${duration > 0 ? (currentTime / duration) * 100 : 0}%` }}
+                          style={{
+                            width: `${
+                              duration > 0 ? (currentTime / duration) * 100 : 0
+                            }%`,
+                          }}
                         />
                       </div>
                     </div>
@@ -326,9 +351,13 @@ export function VideoIntroduction({
             <div className="aspect-video flex items-center justify-center bg-gray-100">
               <div className="text-center">
                 <Camera className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-600 mb-2">No Video Introduction</h3>
+                <h3 className="text-lg font-medium text-gray-600 mb-2">
+                  No Video Introduction
+                </h3>
                 <p className="text-gray-500 text-sm">
-                  {isOwner ? 'Record or upload a video to introduce yourself' : 'This user hasn\'t added a video introduction yet'}
+                  {isOwner
+                    ? "Record or upload a video to introduce yourself"
+                    : "This user hasn't added a video introduction yet"}
                 </p>
               </div>
             </div>
@@ -347,8 +376,8 @@ export function VideoIntroduction({
                 {formatTime(recordingTime)} / {formatTime(maxDuration)}
               </span>
             </div>
-            <Progress 
-              value={(recordingTime / maxDuration) * 100} 
+            <Progress
+              value={(recordingTime / maxDuration) * 100}
               className="h-2"
             />
           </div>
@@ -366,7 +395,7 @@ export function VideoIntroduction({
                   <Camera className="h-4 w-4 mr-2" />
                   Record Video
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   onClick={() => setShowUploadOptions(!showUploadOptions)}
@@ -445,7 +474,9 @@ export function VideoIntroduction({
 
         {/* Tips */}
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <h4 className="font-medium text-blue-900 mb-2">💡 Video Introduction Tips</h4>
+          <h4 className="font-medium text-blue-900 mb-2">
+            💡 Video Introduction Tips
+          </h4>
           <ul className="text-sm text-blue-800 space-y-1">
             <li>• Keep it under 60 seconds</li>
             <li>• Speak clearly and smile</li>

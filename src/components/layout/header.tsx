@@ -15,6 +15,7 @@ export function Header() {
     { name: "Discover", href: "/discover" },
     { name: "Success Stories", href: "/success-stories" },
     { name: "Services", href: "/services" },
+    { name: "Marketplace", href: "/services/marketplace" },
     { name: "Mobile App", href: "/mobile-app" },
     { name: "Pricing", href: "/pricing" },
     { name: "Help", href: "/help" },
