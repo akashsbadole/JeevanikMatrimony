@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Mail, Lock, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import Link from "next/link";
+import { signIn, getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Mail, Lock, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn("credentials", {
         email: formData.email,
         password: formData.password,
         redirect: false,
@@ -32,29 +32,29 @@ export default function SignInPage() {
 
       if (result?.error) {
         toast({
-          title: 'Sign In Failed',
+          title: "Sign In Failed",
           description: result.error,
-          variant: 'destructive',
+          variant: "destructive",
         });
       } else {
         toast({
-          title: 'Welcome back!',
-          description: 'You have been signed in successfully.',
+          title: "Welcome back!",
+          description: "You have been signed in successfully.",
         });
-        
+
         // Check if user has a profile
         const session = await getSession();
         if (session?.user?.hasProfile) {
-          router.push('/dashboard');
+          router.push("/dashboard");
         } else {
-          router.push('/profile/create');
+          router.push("/profile/create");
         }
       }
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'An unexpected error occurred. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -64,12 +64,12 @@ export default function SignInPage() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/dashboard' });
+      await signIn("google", { callbackUrl: "/dashboard" });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to sign in with Google. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to sign in with Google. Please try again.",
+        variant: "destructive",
       });
       setIsLoading(false);
     }
@@ -82,9 +82,9 @@ export default function SignInPage() {
         <div className="text-center">
           <Link href="/" className="inline-flex items-center space-x-2 mb-6">
             <Heart className="h-8 w-8 text-rose-600" />
-            <span className="text-2xl font-bold text-gray-900">Indian Matrimony</span>
+            <span className="text-2xl font-bold text-gray-900">Jeevanik</span>
           </Link>
-          
+
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome Back
           </h2>
@@ -98,7 +98,10 @@ export default function SignInPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -112,14 +115,19 @@ export default function SignInPage() {
                   className="pl-10"
                   placeholder="Enter your email"
                   value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -128,12 +136,17 @@ export default function SignInPage() {
                 </div>
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   required
                   className="pl-10 pr-10"
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
                 />
                 <button
                   type="button"
@@ -158,7 +171,10 @@ export default function SignInPage() {
                   type="checkbox"
                   className="h-4 w-4 text-rose-600 focus:ring-rose-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700"
+                >
                   Remember me
                 </label>
               </div>
@@ -178,7 +194,7 @@ export default function SignInPage() {
               size="lg"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
@@ -189,7 +205,9 @@ export default function SignInPage() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                <span className="px-2 bg-white text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
           </div>
@@ -228,8 +246,11 @@ export default function SignInPage() {
         {/* Sign Up Link */}
         <div className="text-center">
           <p className="text-gray-600">
-            Don't have an account?{' '}
-            <Link href="/auth/signup" className="text-rose-600 hover:text-rose-500 font-medium">
+            Don't have an account?{" "}
+            <Link
+              href="/auth/signup"
+              className="text-rose-600 hover:text-rose-500 font-medium"
+            >
               Sign up for free
             </Link>
           </p>

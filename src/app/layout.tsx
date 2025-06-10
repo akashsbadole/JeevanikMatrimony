@@ -11,14 +11,14 @@ import { ChatWidget } from "@/components/support/live-chat";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Indian Matrimony - Find Your Perfect Life Partner",
+  title: "Jeevanik - Find Your Perfect Life Partner",
   description:
     "India's most trusted matrimony platform. Find your perfect life partner from thousands of verified profiles. Join millions of happy couples who found love through our platform.",
   keywords:
     "matrimony, marriage, wedding, Indian brides, Indian grooms, life partner, shaadi",
-  authors: [{ name: "Indian Matrimony Platform" }],
+  authors: [{ name: "Jeevanik Platform" }],
   openGraph: {
-    title: "Indian Matrimony - Find Your Perfect Life Partner",
+    title: "Jeevanik - Find Your Perfect Life Partner",
     description:
       "India's most trusted matrimony platform with verified profiles",
     type: "website",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Indian Matrimony - Find Your Perfect Life Partner",
+    title: "Jeevanik - Find Your Perfect Life Partner",
     description:
       "India's most trusted matrimony platform with verified profiles",
   },

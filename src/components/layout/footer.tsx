@@ -1,48 +1,83 @@
-import Link from 'next/link';
-import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import Link from "next/link";
+import {
+  Heart,
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  Youtube,
+} from "lucide-react";
 
 export function Footer() {
   const footerLinks = {
     company: [
-      { name: 'About Us', href: '/about' },
-      { name: 'Success Stories', href: '/success-stories' },
-      { name: 'Careers', href: '/careers' },
-      { name: 'Press', href: '/press' },
-      { name: 'Blog', href: '/blog' },
+      { name: "About Us", href: "/about" },
+      { name: "Success Stories", href: "/success-stories" },
+      { name: "Careers", href: "/careers" },
+      { name: "Press", href: "/press" },
+      { name: "Blog", href: "/blog" },
     ],
     services: [
-      { name: 'Search Profiles', href: '/search' },
-      { name: 'Premium Plans', href: '/pricing' },
-      { name: 'Horoscope Matching', href: '/horoscope' },
-      { name: 'Wedding Services', href: '/wedding-services' },
-      { name: 'Mobile App', href: '/mobile-app' },
+      { name: "Search Profiles", href: "/search" },
+      { name: "Premium Plans", href: "/pricing" },
+      { name: "Horoscope Matching", href: "/horoscope" },
+      { name: "Wedding Services", href: "/wedding-services" },
+      { name: "Mobile App", href: "/mobile-app" },
     ],
     support: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Safety Tips', href: '/safety' },
-      { name: 'Report Profile', href: '/report' },
-      { name: 'Feedback', href: '/feedback' },
+      { name: "Help Center", href: "/help" },
+      { name: "Contact Us", href: "/contact" },
+      { name: "Safety Tips", href: "/safety" },
+      { name: "Report Profile", href: "/report" },
+      { name: "Feedback", href: "/feedback" },
     ],
     legal: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'Refund Policy', href: '/refund' },
-      { name: 'Community Guidelines', href: '/guidelines' },
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Cookie Policy", href: "/cookies" },
+      { name: "Refund Policy", href: "/refund" },
+      { name: "Community Guidelines", href: "/guidelines" },
     ],
   };
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: 'https://facebook.com/indianmatrimony' },
-    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/indianmatrimony' },
-    { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/indianmatrimony' },
-    { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/indianmatrimony' },
+    {
+      name: "Facebook",
+      icon: Facebook,
+      href: "https://facebook.com/indianmatrimony",
+    },
+    {
+      name: "Twitter",
+      icon: Twitter,
+      href: "https://twitter.com/indianmatrimony",
+    },
+    {
+      name: "Instagram",
+      icon: Instagram,
+      href: "https://instagram.com/indianmatrimony",
+    },
+    {
+      name: "YouTube",
+      icon: Youtube,
+      href: "https://youtube.com/indianmatrimony",
+    },
   ];
 
   const cities = [
-    'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad',
-    'Pune', 'Ahmedabad', 'Jaipur', 'Surat', 'Lucknow', 'Kanpur'
+    "Mumbai",
+    "Delhi",
+    "Bangalore",
+    "Chennai",
+    "Kolkata",
+    "Hyderabad",
+    "Pune",
+    "Ahmedabad",
+    "Jaipur",
+    "Surat",
+    "Lucknow",
+    "Kanpur",
   ];
 
   return (
@@ -55,14 +90,15 @@ export function Footer() {
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center space-x-2 mb-4">
                 <Heart className="h-8 w-8 text-rose-500" />
-                <span className="text-2xl font-bold">Indian Matrimony</span>
+                <span className="text-2xl font-bold">Jeevanik</span>
               </Link>
-              
+
               <p className="text-gray-400 mb-6 leading-relaxed">
-                India's most trusted matrimony platform connecting millions of families 
-                to find their perfect life partner. Your journey to happiness starts here.
+                India's most trusted matrimony platform connecting millions of
+                families to find their perfect life partner. Your journey to
+                happiness starts here.
               </p>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center text-gray-400">
                   <Mail className="h-4 w-4 mr-3 flex-shrink-0" />
@@ -206,9 +242,9 @@ export function Footer() {
         <div className="py-6 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              © 2024 Indian Matrimony. All rights reserved.
+              © 2024 Jeevanik. All rights reserved.
             </div>
-            
+
             <div className="flex items-center space-x-6 text-gray-400 text-sm">
               <span>🔒 SSL Secured</span>
               <span>✓ Verified Platform</span>

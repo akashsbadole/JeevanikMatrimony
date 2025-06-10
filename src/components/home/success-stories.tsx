@@ -1,49 +1,52 @@
-import { Heart, Quote, Calendar, MapPin } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Heart, Quote, Calendar, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export function SuccessStories() {
   const stories = [
     {
       id: 1,
       couple: {
-        bride: { name: 'Priya Sharma', age: 26, city: 'Mumbai' },
-        groom: { name: 'Rajesh Kumar', age: 29, city: 'Delhi' }
+        bride: { name: "Priya Sharma", age: 26, city: "Mumbai" },
+        groom: { name: "Rajesh Kumar", age: 29, city: "Delhi" },
       },
-      weddingDate: '2024-02-14',
-      story: "We found each other through Indian Matrimony and instantly connected over our shared love for classical music and travel. Our families met, and everything fell into place perfectly. Thank you for helping us find our soulmate!",
-      image: '/api/placeholder/400/300',
-      tags: ['Love Marriage', 'Inter-city', 'Music Lovers']
+      weddingDate: "2024-02-14",
+      story:
+        "We found each other through Jeevanik and instantly connected over our shared love for classical music and travel. Our families met, and everything fell into place perfectly. Thank you for helping us find our soulmate!",
+      image: "/placeholder.jpg",
+      tags: ["Love Marriage", "Inter-city", "Music Lovers"],
     },
     {
       id: 2,
       couple: {
-        bride: { name: 'Anita Patel', age: 24, city: 'Ahmedabad' },
-        groom: { name: 'Vikram Singh', age: 27, city: 'Jaipur' }
+        bride: { name: "Anita Patel", age: 24, city: "Ahmedabad" },
+        groom: { name: "Vikram Singh", age: 27, city: "Jaipur" },
       },
-      weddingDate: '2024-01-20',
-      story: "Our families were looking for a traditional match, and Indian Matrimony's detailed filters helped us find each other. The horoscope matching feature gave our families confidence in our compatibility.",
-      image: '/api/placeholder/400/300',
-      tags: ['Traditional', 'Horoscope Match', 'Family Approved']
+      weddingDate: "2024-01-20",
+      story:
+        "Our families were looking for a traditional match, and Jeevanik's detailed filters helped us find each other. The horoscope matching feature gave our families confidence in our compatibility.",
+      image: "/placeholder.jpg",
+      tags: ["Traditional", "Horoscope Match", "Family Approved"],
     },
     {
       id: 3,
       couple: {
-        bride: { name: 'Deepika Reddy', age: 28, city: 'Hyderabad' },
-        groom: { name: 'Arjun Nair', age: 31, city: 'Bangalore' }
+        bride: { name: "Deepika Reddy", age: 28, city: "Hyderabad" },
+        groom: { name: "Arjun Nair", age: 31, city: "Bangalore" },
       },
-      weddingDate: '2023-12-10',
-      story: "As working professionals, we appreciated the platform's focus on career and education compatibility. We connected over our shared ambitions and values, leading to a beautiful relationship.",
-      image: '/api/placeholder/400/300',
-      tags: ['Professionals', 'Career Focused', 'Modern']
-    }
+      weddingDate: "2023-12-10",
+      story:
+        "As working professionals, we appreciated the platform's focus on career and education compatibility. We connected over our shared ambitions and values, leading to a beautiful relationship.",
+      image: "/placeholder.jpg",
+      tags: ["Professionals", "Career Focused", "Modern"],
+    },
   ];
 
   const stats = [
-    { number: '50,000+', label: 'Success Stories' },
-    { number: '2M+', label: 'Happy Families' },
-    { number: '95%', label: 'Success Rate' },
-    { number: '6 months', label: 'Average Time to Match' }
+    { number: "50,000+", label: "Success Stories" },
+    { number: "2M+", label: "Happy Families" },
+    { number: "95%", label: "Success Rate" },
+    { number: "6 months", label: "Average Time to Match" },
   ];
 
   return (
@@ -55,8 +58,9 @@ export function SuccessStories() {
             Success Stories
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Real couples, real love stories. Discover how thousands of couples found their perfect match 
-            and started their journey of love through our platform.
+            Real couples, real love stories. Discover how thousands of couples
+            found their perfect match and started their journey of love through
+            our platform.
           </p>
         </div>
 
@@ -77,7 +81,10 @@ export function SuccessStories() {
         {/* Stories Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {stories.map((story) => (
-            <div key={story.id} className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div
+              key={story.id}
+              className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
               {/* Image */}
               <div className="relative h-48 bg-gray-200">
                 <img
@@ -104,9 +111,9 @@ export function SuccessStories() {
                     </div>
                     <div className="flex items-center">
                       <Calendar className="h-3 w-3 mr-1" />
-                      {new Date(story.weddingDate).toLocaleDateString('en-IN', { 
-                        month: 'short', 
-                        year: 'numeric' 
+                      {new Date(story.weddingDate).toLocaleDateString("en-IN", {
+                        month: "short",
+                        year: "numeric",
                       })}
                     </div>
                   </div>
@@ -143,18 +150,25 @@ export function SuccessStories() {
               Your Love Story Awaits
             </h3>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              Join thousands of couples who found their perfect match. Start your journey today 
-              and become our next success story.
+              Join thousands of couples who found their perfect match. Start
+              your journey today and become our next success story.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/auth/signup">
-                <Button size="lg" className="bg-rose-600 hover:bg-rose-700 px-8">
+                <Button
+                  size="lg"
+                  className="bg-rose-600 hover:bg-rose-700 px-8"
+                >
                   Find Your Match
                 </Button>
               </Link>
               <Link href="/success-stories">
-                <Button size="lg" variant="outline" className="border-rose-200 text-rose-600 hover:bg-rose-50 px-8">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-rose-200 text-rose-600 hover:bg-rose-50 px-8"
+                >
                   Read More Stories
                 </Button>
               </Link>
@@ -166,18 +180,25 @@ export function SuccessStories() {
                 <div className="flex items-center justify-center mb-4">
                   <div className="flex space-x-1">
                     {[...Array(5)].map((_, i) => (
-                      <Heart key={i} className="h-4 w-4 text-rose-500 fill-current" />
+                      <Heart
+                        key={i}
+                        className="h-4 w-4 text-rose-500 fill-current"
+                      />
                     ))}
                   </div>
                 </div>
                 <blockquote className="text-gray-700 text-center italic mb-4">
-                  "Indian Matrimony made our search so much easier. The detailed profiles and 
-                  family background information helped us make an informed decision. We're grateful 
-                  for bringing us together!"
+                  "Jeevanik made our search so much easier. The detailed
+                  profiles and family background information helped us make an
+                  informed decision. We're grateful for bringing us together!"
                 </blockquote>
                 <div className="text-center">
-                  <div className="font-semibold text-gray-900">Meera & Rohit</div>
-                  <div className="text-sm text-gray-600">Married in March 2024</div>
+                  <div className="font-semibold text-gray-900">
+                    Meera & Rohit
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Married in March 2024
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-# Indian Matrimony Platform
+# Jeevanik Platform
 
 A comprehensive online matrimony platform tailored for Indian users, built with Next.js 15, TypeScript, and Tailwind CSS. This platform provides all the essential features needed for a modern matrimony service including user profiles, advanced search, messaging, and premium subscriptions.
 

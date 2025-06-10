@@ -180,9 +180,7 @@ export default function MobileAppPage() {
                 <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
                   {/* Phone Screen Content */}
                   <div className="bg-gradient-to-r from-rose-500 to-pink-500 h-20 flex items-center justify-center">
-                    <h3 className="text-white font-semibold">
-                      Indian Matrimony
-                    </h3>
+                    <h3 className="text-white font-semibold">Jeevanik</h3>
                   </div>
 
                   <div className="p-4 space-y-4">

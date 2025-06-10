@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Fingerprint, Eye, Smartphone, Shield, AlertCircle, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect } from "react";
+import {
+  Fingerprint,
+  Eye,
+  Smartphone,
+  Shield,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 interface BiometricAuthProps {
   onSuccess: (method: string) => void;
@@ -20,7 +27,11 @@ interface BiometricCapabilities {
   deviceSupported: boolean;
 }
 
-export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: BiometricAuthProps) {
+export function BiometricAuth({
+  onSuccess,
+  onError,
+  availableMethods = [],
+}: BiometricAuthProps) {
   const [capabilities, setCapabilities] = useState<BiometricCapabilities>({
     fingerprint: false,
     faceID: false,
@@ -38,20 +49,22 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
   const checkBiometricCapabilities = async () => {
     try {
       // Check if Web Authentication API is supported
-      const webAuthnSupported = 'credentials' in navigator && 'create' in navigator.credentials;
-      
+      const webAuthnSupported =
+        "credentials" in navigator && "create" in navigator.credentials;
+
       if (!webAuthnSupported) {
-        setCapabilities(prev => ({ ...prev, deviceSupported: false }));
+        setCapabilities((prev) => ({ ...prev, deviceSupported: false }));
         return;
       }
 
       // Check for specific biometric capabilities
-      const publicKeyCredentialSupported = 'PublicKeyCredential' in window;
-      
+      const publicKeyCredentialSupported = "PublicKeyCredential" in window;
+
       if (publicKeyCredentialSupported) {
         // Check for platform authenticator (built-in biometrics)
-        const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-        
+        const available =
+          await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+
         setCapabilities({
           fingerprint: available,
           faceID: available,
@@ -60,14 +73,14 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
         });
       }
     } catch (error) {
-      console.error('Error checking biometric capabilities:', error);
-      setCapabilities(prev => ({ ...prev, deviceSupported: false }));
+      console.error("Error checking biometric capabilities:", error);
+      setCapabilities((prev) => ({ ...prev, deviceSupported: false }));
     }
   };
 
   const authenticateWithFingerprint = async () => {
     setIsAuthenticating(true);
-    setAuthMethod('fingerprint');
+    setAuthMethod("fingerprint");
 
     try {
       // Create credential request for fingerprint
@@ -75,45 +88,47 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
         publicKey: {
           challenge: new Uint8Array(32),
           rp: {
-            name: 'Indian Matrimony',
+            name: "Jeevanik",
             id: window.location.hostname,
           },
           user: {
             id: new Uint8Array(16),
-            name: 'user@example.com',
-            displayName: 'User',
+            name: "user@example.com",
+            displayName: "User",
           },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+          pubKeyCredParams: [{ alg: -7, type: "public-key" }],
           authenticatorSelection: {
-            authenticatorAttachment: 'platform',
-            userVerification: 'required',
+            authenticatorAttachment: "platform",
+            userVerification: "required",
           },
           timeout: 60000,
-          attestation: 'direct',
+          attestation: "direct",
         },
       });
 
       if (credential) {
         toast({
-          title: 'Fingerprint Authentication Successful',
-          description: 'You have been authenticated using your fingerprint.',
+          title: "Fingerprint Authentication Successful",
+          description: "You have been authenticated using your fingerprint.",
         });
-        onSuccess('fingerprint');
+        onSuccess("fingerprint");
       }
     } catch (error: any) {
-      console.error('Fingerprint authentication error:', error);
-      let errorMessage = 'Fingerprint authentication failed';
-      
-      if (error.name === 'NotAllowedError') {
-        errorMessage = 'Fingerprint authentication was cancelled or not allowed';
-      } else if (error.name === 'NotSupportedError') {
-        errorMessage = 'Fingerprint authentication is not supported on this device';
+      console.error("Fingerprint authentication error:", error);
+      let errorMessage = "Fingerprint authentication failed";
+
+      if (error.name === "NotAllowedError") {
+        errorMessage =
+          "Fingerprint authentication was cancelled or not allowed";
+      } else if (error.name === "NotSupportedError") {
+        errorMessage =
+          "Fingerprint authentication is not supported on this device";
       }
-      
+
       toast({
-        title: 'Authentication Failed',
+        title: "Authentication Failed",
         description: errorMessage,
-        variant: 'destructive',
+        variant: "destructive",
       });
       onError(errorMessage);
     } finally {
@@ -124,7 +139,7 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
 
   const authenticateWithFaceID = async () => {
     setIsAuthenticating(true);
-    setAuthMethod('faceID');
+    setAuthMethod("faceID");
 
     try {
       // Similar to fingerprint but with face recognition preference
@@ -132,45 +147,45 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
         publicKey: {
           challenge: new Uint8Array(32),
           rp: {
-            name: 'Indian Matrimony',
+            name: "Jeevanik",
             id: window.location.hostname,
           },
           user: {
             id: new Uint8Array(16),
-            name: 'user@example.com',
-            displayName: 'User',
+            name: "user@example.com",
+            displayName: "User",
           },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+          pubKeyCredParams: [{ alg: -7, type: "public-key" }],
           authenticatorSelection: {
-            authenticatorAttachment: 'platform',
-            userVerification: 'required',
+            authenticatorAttachment: "platform",
+            userVerification: "required",
           },
           timeout: 60000,
-          attestation: 'direct',
+          attestation: "direct",
         },
       });
 
       if (credential) {
         toast({
-          title: 'Face ID Authentication Successful',
-          description: 'You have been authenticated using Face ID.',
+          title: "Face ID Authentication Successful",
+          description: "You have been authenticated using Face ID.",
         });
-        onSuccess('faceID');
+        onSuccess("faceID");
       }
     } catch (error: any) {
-      console.error('Face ID authentication error:', error);
-      let errorMessage = 'Face ID authentication failed';
-      
-      if (error.name === 'NotAllowedError') {
-        errorMessage = 'Face ID authentication was cancelled or not allowed';
-      } else if (error.name === 'NotSupportedError') {
-        errorMessage = 'Face ID is not supported on this device';
+      console.error("Face ID authentication error:", error);
+      let errorMessage = "Face ID authentication failed";
+
+      if (error.name === "NotAllowedError") {
+        errorMessage = "Face ID authentication was cancelled or not allowed";
+      } else if (error.name === "NotSupportedError") {
+        errorMessage = "Face ID is not supported on this device";
       }
-      
+
       toast({
-        title: 'Authentication Failed',
+        title: "Authentication Failed",
         description: errorMessage,
-        variant: 'destructive',
+        variant: "destructive",
       });
       onError(errorMessage);
     } finally {
@@ -181,37 +196,37 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
 
   const authenticateWithVoice = async () => {
     setIsAuthenticating(true);
-    setAuthMethod('voice');
+    setAuthMethod("voice");
 
     try {
       // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+
       // Simulate voice authentication (in real implementation, this would use voice recognition APIs)
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
       // Stop the stream
-      stream.getTracks().forEach(track => track.stop());
-      
+      stream.getTracks().forEach((track) => track.stop());
+
       toast({
-        title: 'Voice Authentication Successful',
-        description: 'You have been authenticated using voice recognition.',
+        title: "Voice Authentication Successful",
+        description: "You have been authenticated using voice recognition.",
       });
-      onSuccess('voice');
+      onSuccess("voice");
     } catch (error: any) {
-      console.error('Voice authentication error:', error);
-      let errorMessage = 'Voice authentication failed';
-      
-      if (error.name === 'NotAllowedError') {
-        errorMessage = 'Microphone access was denied';
-      } else if (error.name === 'NotFoundError') {
-        errorMessage = 'No microphone found on this device';
+      console.error("Voice authentication error:", error);
+      let errorMessage = "Voice authentication failed";
+
+      if (error.name === "NotAllowedError") {
+        errorMessage = "Microphone access was denied";
+      } else if (error.name === "NotFoundError") {
+        errorMessage = "No microphone found on this device";
       }
-      
+
       toast({
-        title: 'Authentication Failed',
+        title: "Authentication Failed",
         description: errorMessage,
-        variant: 'destructive',
+        variant: "destructive",
       });
       onError(errorMessage);
     } finally {
@@ -229,7 +244,8 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
             Biometric Authentication Not Available
           </h3>
           <p className="text-gray-600 mb-4">
-            Your device doesn't support biometric authentication or it's not enabled.
+            Your device doesn't support biometric authentication or it's not
+            enabled.
           </p>
           <div className="text-sm text-gray-500">
             <p>To use biometric authentication:</p>
@@ -252,7 +268,8 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
           Biometric Authentication
         </CardTitle>
         <p className="text-gray-600">
-          Choose your preferred biometric authentication method for secure access.
+          Choose your preferred biometric authentication method for secure
+          access.
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -264,7 +281,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
                 <Fingerprint className="h-6 w-6 text-blue-600 mr-3" />
                 <div>
                   <h4 className="font-medium text-gray-900">Fingerprint</h4>
-                  <p className="text-sm text-gray-600">Use your fingerprint to authenticate</p>
+                  <p className="text-sm text-gray-600">
+                    Use your fingerprint to authenticate
+                  </p>
                 </div>
               </div>
               <Badge className="bg-green-100 text-green-800">Available</Badge>
@@ -273,9 +292,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
               onClick={authenticateWithFingerprint}
               disabled={isAuthenticating}
               className="w-full"
-              variant={authMethod === 'fingerprint' ? 'default' : 'outline'}
+              variant={authMethod === "fingerprint" ? "default" : "outline"}
             >
-              {isAuthenticating && authMethod === 'fingerprint' ? (
+              {isAuthenticating && authMethod === "fingerprint" ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Authenticating...
@@ -298,7 +317,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
                 <Eye className="h-6 w-6 text-purple-600 mr-3" />
                 <div>
                   <h4 className="font-medium text-gray-900">Face ID</h4>
-                  <p className="text-sm text-gray-600">Use facial recognition to authenticate</p>
+                  <p className="text-sm text-gray-600">
+                    Use facial recognition to authenticate
+                  </p>
                 </div>
               </div>
               <Badge className="bg-green-100 text-green-800">Available</Badge>
@@ -307,9 +328,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
               onClick={authenticateWithFaceID}
               disabled={isAuthenticating}
               className="w-full"
-              variant={authMethod === 'faceID' ? 'default' : 'outline'}
+              variant={authMethod === "faceID" ? "default" : "outline"}
             >
-              {isAuthenticating && authMethod === 'faceID' ? (
+              {isAuthenticating && authMethod === "faceID" ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Authenticating...
@@ -331,7 +352,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
               <Smartphone className="h-6 w-6 text-green-600 mr-3" />
               <div>
                 <h4 className="font-medium text-gray-900">Voice Recognition</h4>
-                <p className="text-sm text-gray-600">Use your voice to authenticate</p>
+                <p className="text-sm text-gray-600">
+                  Use your voice to authenticate
+                </p>
               </div>
             </div>
             <Badge className="bg-blue-100 text-blue-800">Beta</Badge>
@@ -340,9 +363,9 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
             onClick={authenticateWithVoice}
             disabled={isAuthenticating}
             className="w-full"
-            variant={authMethod === 'voice' ? 'default' : 'outline'}
+            variant={authMethod === "voice" ? "default" : "outline"}
           >
-            {isAuthenticating && authMethod === 'voice' ? (
+            {isAuthenticating && authMethod === "voice" ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                 Listening...
@@ -361,10 +384,13 @@ export function BiometricAuth({ onSuccess, onError, availableMethods = [] }: Bio
           <div className="flex items-start">
             <CheckCircle className="h-5 w-5 text-blue-600 mr-2 mt-0.5" />
             <div className="text-sm">
-              <h5 className="font-medium text-blue-900 mb-1">Secure & Private</h5>
+              <h5 className="font-medium text-blue-900 mb-1">
+                Secure & Private
+              </h5>
               <p className="text-blue-700">
-                Your biometric data is processed locally on your device and never stored on our servers. 
-                This ensures maximum security and privacy for your authentication.
+                Your biometric data is processed locally on your device and
+                never stored on our servers. This ensures maximum security and
+                privacy for your authentication.
               </p>
             </div>
           </div>

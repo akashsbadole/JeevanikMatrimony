@@ -28,9 +28,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Heart className="h-8 w-8 text-rose-600" />
-            <span className="text-2xl font-bold text-gray-900">
-              Indian Matrimony
-            </span>
+            <span className="text-2xl font-bold text-gray-900">Jeevanik</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -39,7 +37,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-rose-600 px-3 py-2 text-sm font-medium transition-colors"
+                className="text-gray-700 hover:text-rose-600 px py text-sm font-medium transition-colors"
               >
                 {item.name}
               </Link>
@@ -78,7 +76,11 @@ export function Header() {
             ) : (
               <div className="flex items-center space-x-3">
                 <SignInButton mode="modal">
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="outline outline-black text-black"
+                  >
                     Sign In
                   </Button>
                 </SignInButton>

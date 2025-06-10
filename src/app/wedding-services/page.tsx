@@ -135,7 +135,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.8,
       vendorReviews: 156,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Mumbai, Maharashtra",
       availability: {
         days: ["Saturday", "Sunday"],
@@ -163,7 +163,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.9,
       vendorReviews: 89,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Pan India",
     },
     {
@@ -187,7 +187,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.7,
       vendorReviews: 234,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Delhi, India",
     },
     {
@@ -211,7 +211,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.6,
       vendorReviews: 78,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Bangalore, Karnataka",
     },
     {
@@ -235,7 +235,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.5,
       vendorReviews: 145,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Pune, Maharashtra",
     },
     {
@@ -258,7 +258,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.4,
       vendorReviews: 67,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Chennai, Tamil Nadu",
     },
     {
@@ -281,7 +281,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.9,
       vendorReviews: 203,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Goa, India",
     },
     {
@@ -305,7 +305,7 @@ export default function WeddingServicesPage() {
       vendorRating: 4.6,
       vendorReviews: 112,
       isActive: true,
-      images: ["/api/placeholder/400/300"],
+      images: ["/placeholder.jpg"],
       location: "Jaipur, Rajasthan",
     },
   ];

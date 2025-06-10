@@ -1,5 +1,5 @@
 // Notification Service for Email and SMS
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 // Email Service Configuration
 interface EmailConfig {
@@ -42,12 +42,12 @@ class NotificationService {
   // Initialize Email Service (using Nodemailer with Gmail/SMTP)
   private initializeEmailService() {
     const emailConfig: EmailConfig = {
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587'),
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: parseInt(process.env.SMTP_PORT || "587"),
       secure: false,
       auth: {
-        user: process.env.SMTP_USER || '',
-        pass: process.env.SMTP_PASS || '',
+        user: process.env.SMTP_USER || "",
+        pass: process.env.SMTP_PASS || "",
       },
     };
 
@@ -64,14 +64,20 @@ class NotificationService {
   }
 
   // Email Templates
-  private getEmailTemplate(templateId: string, variables: Record<string, any>): EmailTemplate {
-    const templates: Record<string, (vars: Record<string, any>) => EmailTemplate> = {
+  private getEmailTemplate(
+    templateId: string,
+    variables: Record<string, any>
+  ): EmailTemplate {
+    const templates: Record<
+      string,
+      (vars: Record<string, any>) => EmailTemplate
+    > = {
       welcome: (vars) => ({
-        subject: 'Welcome to Indian Matrimony!',
+        subject: "Welcome to Jeevanik!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #e11d48, #ec4899); padding: 30px; text-align: center;">
-              <h1 style="color: white; margin: 0;">Welcome to Indian Matrimony</h1>
+              <h1 style="color: white; margin: 0;">Welcome to Jeevanik</h1>
             </div>
             <div style="padding: 30px; background: #f9fafb;">
               <h2 style="color: #374151;">Hello ${vars.name}!</h2>
@@ -94,15 +100,15 @@ class NotificationService {
               </div>
             </div>
             <div style="background: #374151; color: white; padding: 20px; text-align: center;">
-              <p style="margin: 0;">© 2024 Indian Matrimony. All rights reserved.</p>
+              <p style="margin: 0;">© 2024 Jeevanik. All rights reserved.</p>
             </div>
           </div>
         `,
-        text: `Welcome to Indian Matrimony! Hello ${vars.name}, we're excited to help you find your perfect life partner. Complete your profile at ${vars.profileUrl}`
+        text: `Welcome to Jeevanik! Hello ${vars.name}, we're excited to help you find your perfect life partner. Complete your profile at ${vars.profileUrl}`,
       }),
 
       emailVerification: (vars) => ({
-        subject: 'Verify Your Email Address',
+        subject: "Verify Your Email Address",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #3b82f6; padding: 30px; text-align: center;">
@@ -124,11 +130,11 @@ class NotificationService {
             </div>
           </div>
         `,
-        text: `Verify your email address by clicking: ${vars.verificationUrl}`
+        text: `Verify your email address by clicking: ${vars.verificationUrl}`,
       }),
 
       newMatch: (vars) => ({
-        subject: 'New Match Found!',
+        subject: "New Match Found!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 30px; text-align: center;">
@@ -153,11 +159,11 @@ class NotificationService {
             </div>
           </div>
         `,
-        text: `New match found! ${vars.matchName}, ${vars.matchAge}, ${vars.matchLocation}. View profile: ${vars.profileUrl}`
+        text: `New match found! ${vars.matchName}, ${vars.matchAge}, ${vars.matchLocation}. View profile: ${vars.profileUrl}`,
       }),
 
       interestReceived: (vars) => ({
-        subject: 'Someone is interested in your profile!',
+        subject: "Someone is interested in your profile!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 30px; text-align: center;">
@@ -176,11 +182,11 @@ class NotificationService {
             </div>
           </div>
         `,
-        text: `${vars.senderName} has shown interest in your profile! View: ${vars.interestUrl}`
+        text: `${vars.senderName} has shown interest in your profile! View: ${vars.interestUrl}`,
       }),
 
       passwordReset: (vars) => ({
-        subject: 'Reset Your Password',
+        subject: "Reset Your Password",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #dc2626; padding: 30px; text-align: center;">
@@ -202,11 +208,11 @@ class NotificationService {
             </div>
           </div>
         `,
-        text: `Reset your password: ${vars.resetUrl}`
+        text: `Reset your password: ${vars.resetUrl}`,
       }),
 
       premiumUpgrade: (vars) => ({
-        subject: 'Welcome to Premium Membership!',
+        subject: "Welcome to Premium Membership!",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #7c3aed, #5b21b6); padding: 30px; text-align: center;">
@@ -235,8 +241,8 @@ class NotificationService {
             </div>
           </div>
         `,
-        text: `Welcome to Premium! Your premium membership is now active. Explore features: ${vars.dashboardUrl}`
-      })
+        text: `Welcome to Premium! Your premium membership is now active. Explore features: ${vars.dashboardUrl}`,
+      }),
     };
 
     const templateFn = templates[templateId];
@@ -248,24 +254,27 @@ class NotificationService {
   }
 
   // SMS Templates
-  private getSMSTemplate(templateId: string, variables: Record<string, any>): string {
+  private getSMSTemplate(
+    templateId: string,
+    variables: Record<string, any>
+  ): string {
     const templates: Record<string, (vars: Record<string, any>) => string> = {
-      phoneVerification: (vars) => 
-        `Your Indian Matrimony verification code is: ${vars.otp}. Valid for 10 minutes. Do not share this code.`,
-      
-      newMatch: (vars) => 
+      phoneVerification: (vars) =>
+        `Your Jeevanik verification code is: ${vars.otp}. Valid for 10 minutes. Do not share this code.`,
+
+      newMatch: (vars) =>
         `New match found! ${vars.matchName} (${vars.compatibility}% match) is interested. View: ${vars.profileUrl}`,
-      
-      interestReceived: (vars) => 
+
+      interestReceived: (vars) =>
         `${vars.senderName} showed interest in your profile! Respond now: ${vars.interestUrl}`,
-      
-      passwordReset: (vars) => 
-        `Reset your Indian Matrimony password: ${vars.resetUrl}. Link expires in 1 hour.`,
-      
-      premiumUpgrade: (vars) => 
+
+      passwordReset: (vars) =>
+        `Reset your Jeevanik password: ${vars.resetUrl}. Link expires in 1 hour.`,
+
+      premiumUpgrade: (vars) =>
         `Welcome to Premium! Your membership is active. Enjoy unlimited features: ${vars.dashboardUrl}`,
-      
-      meetingReminder: (vars) => 
+
+      meetingReminder: (vars) =>
         `Reminder: Meeting with ${vars.matchName} tomorrow at ${vars.time}. Location: ${vars.location}`,
     };
 
@@ -281,13 +290,13 @@ class NotificationService {
   async sendEmail(data: NotificationData): Promise<boolean> {
     try {
       if (!this.emailTransporter) {
-        throw new Error('Email service not initialized');
+        throw new Error("Email service not initialized");
       }
 
       const template = this.getEmailTemplate(data.templateId, data.variables);
 
       const mailOptions = {
-        from: process.env.SMTP_FROM || 'noreply@indianmatrimony.com',
+        from: process.env.SMTP_FROM || "noreply@indianmatrimony.com",
         to: data.to,
         subject: template.subject,
         html: template.html,
@@ -295,10 +304,10 @@ class NotificationService {
       };
 
       const result = await this.emailTransporter.sendMail(mailOptions);
-      console.log('Email sent successfully:', result.messageId);
+      console.log("Email sent successfully:", result.messageId);
       return true;
     } catch (error) {
-      console.error('Email sending failed:', error);
+      console.error("Email sending failed:", error);
       return false;
     }
   }
@@ -307,7 +316,7 @@ class NotificationService {
   async sendSMS(data: NotificationData): Promise<boolean> {
     try {
       if (!this.smsClient) {
-        console.log('SMS service not configured, skipping SMS');
+        console.log("SMS service not configured, skipping SMS");
         return false;
       }
 
@@ -320,16 +329,19 @@ class NotificationService {
       //   to: data.to
       // });
 
-      console.log('SMS sent successfully to:', data.to);
+      console.log("SMS sent successfully to:", data.to);
       return true;
     } catch (error) {
-      console.error('SMS sending failed:', error);
+      console.error("SMS sending failed:", error);
       return false;
     }
   }
 
   // Send both Email and SMS
-  async sendNotification(emailData: NotificationData, smsData?: NotificationData): Promise<{
+  async sendNotification(
+    emailData: NotificationData,
+    smsData?: NotificationData
+  ): Promise<{
     email: boolean;
     sms: boolean;
   }> {
@@ -350,7 +362,11 @@ class NotificationService {
   }
 
   // Bulk email sending
-  async sendBulkEmail(recipients: string[], templateId: string, variables: Record<string, any>): Promise<{
+  async sendBulkEmail(
+    recipients: string[],
+    templateId: string,
+    variables: Record<string, any>
+  ): Promise<{
     success: number;
     failed: number;
   }> {
@@ -370,7 +386,7 @@ class NotificationService {
       }
 
       // Add delay to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
     return results;
@@ -378,8 +394,8 @@ class NotificationService {
 
   // Generate OTP
   generateOTP(length: number = 6): string {
-    const digits = '0123456789';
-    let otp = '';
+    const digits = "0123456789";
+    let otp = "";
     for (let i = 0; i < length; i++) {
       otp += digits[Math.floor(Math.random() * digits.length)];
     }
@@ -393,7 +409,7 @@ class NotificationService {
       await this.emailTransporter.verify();
       return true;
     } catch (error) {
-      console.error('Email service verification failed:', error);
+      console.error("Email service verification failed:", error);
       return false;
     }
   }
@@ -406,18 +422,25 @@ export const notificationService = new NotificationService();
 export type { NotificationData, EmailTemplate };
 
 // Utility functions for common notifications
-export const sendWelcomeEmail = async (email: string, name: string, profileUrl: string) => {
+export const sendWelcomeEmail = async (
+  email: string,
+  name: string,
+  profileUrl: string
+) => {
   return await notificationService.sendEmail({
     to: email,
-    templateId: 'welcome',
+    templateId: "welcome",
     variables: { name, profileUrl },
   });
 };
 
-export const sendVerificationEmail = async (email: string, verificationUrl: string) => {
+export const sendVerificationEmail = async (
+  email: string,
+  verificationUrl: string
+) => {
   return await notificationService.sendEmail({
     to: email,
-    templateId: 'emailVerification',
+    templateId: "emailVerification",
     variables: { verificationUrl },
   });
 };
@@ -425,7 +448,7 @@ export const sendVerificationEmail = async (email: string, verificationUrl: stri
 export const sendPhoneVerificationSMS = async (phone: string, otp: string) => {
   return await notificationService.sendSMS({
     to: phone,
-    templateId: 'phoneVerification',
+    templateId: "phoneVerification",
     variables: { otp },
   });
 };
@@ -439,12 +462,12 @@ export const sendNewMatchNotification = async (
   return await notificationService.sendNotification(
     {
       to: email,
-      templateId: 'newMatch',
+      templateId: "newMatch",
       variables: { userName, ...matchData },
     },
     {
       to: phone,
-      templateId: 'newMatch',
+      templateId: "newMatch",
       variables: { ...matchData },
     }
   );
