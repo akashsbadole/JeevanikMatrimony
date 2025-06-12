@@ -260,7 +260,7 @@ export default function AstrologyPage() {
                     <SelectValue placeholder="Filter by specialization" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Specializations</SelectItem>
+                    <SelectItem value="all">All Specializations</SelectItem>
                     {specializations.map((spec) => (
                       <SelectItem key={spec} value={spec}>
                         {spec}
